@@ -1,0 +1,6 @@
+{
+  "name": "WimIO",
+  "tagline": "WimIO, a 10$ wifi temperature/humidity/Luminosity sensor",
+  "body": "# WimIO, a 10$ temperature/humidity/Luminosity sensor.\r\nThis project is covered by Licence GPL v2.0\r\n\r\nThis station monitor temperature, humidity, and Luminosity throught wifi connection and display thoses value on a small Oled screen. This station is also connected throught MQTT protocole to create a extendable network with others stations.\r\n\r\nThe whole project is running over Arduino with some additionals module see part 4 for more info about requirement.\r\n\r\nA special thanks to @squix78 and his fantastic weather station : https://github.com/squix78/esp8266-projects/tree/master/arduino-ide/weather-station-v2\r\nI started to use his code and then added my own code, if you want also display weather forecast the code could easily be merge.\r\n\r\n## Hardware requirement:\r\n### BOM\r\n\r\n### Wiring\r\n\r\n## Software requirement:\r\n### Thingspeak, MQTT\r\n\r\n### Third party Library\r\n\r\n### Create your own icons\r\n\r\n### Uploading\r\n\r\n## Issue and future improvements\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
