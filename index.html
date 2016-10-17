@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Wimio by miogui</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Wimio</h1>
+        <h2>Wimio, a 10$ wifi temperature/humidity/Luminosity sensor</h2>
+        <a href="https://github.com/miogui/wimio" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="wimio-a-10-temperaturehumidityluminosity-sensor" class="anchor" href="#wimio-a-10-temperaturehumidityluminosity-sensor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>WimIO, a 10$ temperature/humidity/Luminosity sensor.</h1>
+
+<p>This project is covered by Licence GPL v2.0</p>
+
+<p>This station monitor temperature, humidity, and Luminosity throught wifi connection and display thoses value on a small Oled screen. This station is also connected throught MQTT protocole to create a extendable network with others stations.</p>
+
+<p>The whole project is running over Arduino with some additionals module see part 4 for more info about requirement.</p>
+
+<p>A special thanks to <a href="https://github.com/squix78" class="user-mention">@squix78</a> and his fantastic weather station : <a href="https://github.com/squix78/esp8266-projects/tree/master/arduino-ide/weather-station-v2">https://github.com/squix78/esp8266-projects/tree/master/arduino-ide/weather-station-v2</a>
+I started to use his code and then added my own code, if you want also display weather forecast the code could easily be merge.</p>
+
+<h2>
+<a id="hardware-requirement" class="anchor" href="#hardware-requirement" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hardware requirement:</h2>
+
+<h4>
+<a id="bom" class="anchor" href="#bom" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BOM</h4>
+
+<ul>
+<li><a href="https://fr.aliexpress.com/item/ESP8266-serial-WIFI-Witty-cloud-Development-Board-ESP-12F-module-MINI-nodemcu/32566502491.html?spm=2114.06010108.3.1.IhonA2&amp;ws_ab_test=searchweb201556_0,searchweb201602_1_10065_10068_112_10069_110_111_418_10017_109_108_10060_10061_10062_10057_10056_10055_10054_10059_10058_10073_10072_10070_10052_10053_10050_10051,searchweb201603_4&amp;btsid=27a84b4d-a1e6-4a92-bde2-c7923b65d879">Witty cloud ESP12F</a></li>
+<li><a href="https://fr.aliexpress.com/item/Free-shipping-Yellow-blue-double-color-128X64-OLED-LCD-LED-Display-Module-For-Arduino-0-96/32233367757.html?spm=2114.06010108.3.11.tMsYsi&amp;ws_ab_test=searchweb201556_0,searchweb201602_1_10065_10068_112_10069_110_111_418_10017_109_108_10060_10061_10062_10057_10056_10055_10054_10059_10058_10073_10072_10070_10052_10053_10050_10051,searchweb201603_4&amp;btsid=42c386d3-b9e9-4735-9921-5023d7ee0f60">0.93" Oled screen</a></li>
+<li><a href="https://fr.aliexpress.com/item/1pcs-DHT22-digital-temperature-and-humidity-sensor-Temperature-and-humidity-module-AM2302-replace-SHT11-SHT15-Free/1059369726.html?spm=2114.06010108.3.1.Fr8hY7&amp;ws_ab_test=searchweb201556_0,searchweb201602_1_10065_10068_112_10069_110_111_418_10017_109_108_10060_10061_10062_10057_10056_10055_10054_10059_10058_10073_10072_10070_10052_10053_10050_10051,searchweb201603_4&amp;btsid=23c72e47-e309-467e-a4bb-e0f7a99fc25b">DHT22 humidity/temperature sensor</a></li>
+<li>
+<a href="https://fr.aliexpress.com/item/TSL2561-Luminosity-Sensor-Breakout-infrared-Light-Sensor-integrating-sensor/32600182691.html?spm=2114.06010108.3.2.AolcbO&amp;ws_ab_test=searchweb201556_0,searchweb201602_1_10065_10068_112_10069_110_111_418_10017_109_108_10060_10061_10062_10057_10056_10055_10054_10059_10058_10073_10072_10070_10052_10053_10050_10051,searchweb201603_4&amp;btsid=ed8dcc3c-3aac-4ee8-b985-4a517e75a9cd">TLS2561 luminosity sensor</a> </li>
+</ul>
+
+<h4>
+<a id="wiring" class="anchor" href="#wiring" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Wiring</h4>
+
+<p>In order to get your wimIO working you just have to connect SCL pins (of screen and TLS2561) on GPIO5 of the esp8266, connect SDA on GPIO4 and data of DHT22 on GPIO2 with a 10k pull-up. 
+<img src="https://github.com/miogui/wimio/raw/master/wimIO%20Sketch_bb.png" alt="Wiring diagramm"></p>
+
+<h2>
+<a id="software-requirement" class="anchor" href="#software-requirement" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Software requirement:</h2>
+
+<p>Arduino + library esp8266 + adafruit TSL2561 library</p>
+
+<h4>
+<a id="thingspeak" class="anchor" href="#thingspeak" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Thingspeak</h4>
+
+<p>First signup for the new account in thingspeak at  <a href="https://www.thingspeak.com">https://www.thingspeak.com</a>
+Login to your account and  click on the channels icon.
+Create a new channel by clicking on the “Create New Channel” button.
+Give a name for your project and fill the field column:</p>
+
+<ul>
+<li>Field1: Temperature</li>
+<li>Field2: Humidty</li>
+<li>Field3: Luminosity
+Click the Update “Channel button” after completing the Channel Settings.
+Click on the API Keys tab and copy down the API_KEY value.
+Paste the API Key on Wimio.ino : String apiKey = "xxxxxxxxxxxxxxxxx";</li>
+</ul>
+
+<h4>
+<a id="third-party-library" class="anchor" href="#third-party-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Third party Library</h4>
+
+<p>In order to use the TSL2561 you need to add the adafruit TSL2561 library : <a href="https://github.com/adafruit/TSL2561-Arduino-Library">https://github.com/adafruit/TSL2561-Arduino-Library</a>.
+This library is intend to run with standard arduino (AVR) board, to use this library with an ESP8266 board, please modify the TSL2561.cpp as follow:
+suppress <code>#include &lt;util/delay.h&gt;</code>
+change <code>#include &lt;avr/pgmspace.h&gt;</code> in <code>#include &lt;pgmspace.h&gt;</code>
+add <code>#define _delay_ms(ms) delayMicroseconds((ms) * 1000)" just after "#include "TSL2561.h"</code></p>
+
+<h4>
+<a id="create-your-own-icons" class="anchor" href="#create-your-own-icons" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create your own icons</h4>
+
+<p>To create new icon, use gimp and export to xbm format (do not tick any trickbox)
+Then open the file saved with your favorite editor and copy the content inside the icons.h file.
+remove "static" descriptor ...</p>
+
+<p>That's all, you can now display your icon with: <code>display.drawXbm(x , y , width, height, name_of_file);</code></p>
+
+<h4>
+<a id="uploading" class="anchor" href="#uploading" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Uploading</h4>
+
+<p>Be sure you have settup all value needed :</p>
+
+<p><code>// Global Setting</code></p>
+
+<p><code>// your network SSID (name)</code></p>
+
+<p><code>char ssid[] = "your_ssid";</code></p>
+
+<p><code>// your network password</code></p>
+
+<p><code>char pass[] = "password";</code></p>
+
+<p><code>// MQTT broker server</code></p>
+
+<p><code>const char* mqtt_server = "broker.hivemq.com";</code></p>
+
+<p><code>// Client name, use any name you want</code></p>
+
+<p><code>const char* clientID = "wimio1";</code></p>
+
+<p><code>const char* outTopic = "wimio1/outTopic";</code></p>
+
+<p><code>const char* outTopic1 = "wimio1/Temperature";</code></p>
+
+<p><code>const char* outTopic2 = "wimio1/Humidity";</code></p>
+
+<p><code>const char* outTopic3 = "wimio1/Luminosity";</code></p>
+
+<p><code>const char* inTopic = "wimio1/inTopic";</code></p>
+
+<p><code>String apiKey = "XXXXXXXXXXXXXXXX";</code></p>
+
+<p><code>const char* tsserver = "api.thingspeak.com";</code></p>
+
+<h2>
+<a id="issue-and-future-improvements" class="anchor" href="#issue-and-future-improvements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Issue and future improvements</h2>
+
+<h4>
+<a id="issue" class="anchor" href="#issue" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Issue</h4>
+
+<p>Actually the temperature sensor is corrupted by the esp8266 board temperature when runing with MQTT. As a workaround you need to move apart the DHT22 or reduce heating of the esp8266, by stopping polling of MQTT and put the esp8266 in low power state when the esp8266 doesn't need to run.</p>
+
+<h4>
+<a id="improvements" class="anchor" href="#improvements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Improvements</h4>
+
+<p>A lot of futur developpement are already in the pipe:</p>
+
+<ul>
+<li>Add an example to monitor others wimIO sensors on one wimIO (already working, just need to cleanup the code)</li>
+<li>Add an example to monitor soil moisture, Co2, barometer(BMP085), etc...</li>
+<li>Add a configuration file to be able to select what you want to see and monitor (humidity/temperature/luminosity/weather/finance/alert/MQTT/thingspeak/etc...)</li>
+<li>Add a web-server to configure anything you want (SSID, chanel name etc...)</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/miogui/wimio/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/miogui/wimio/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/miogui/wimio"></a> is maintained by <a href="https://github.com/miogui">miogui</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
