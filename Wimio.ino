@@ -49,6 +49,7 @@ TSL2561 tsl(TSL2561_ADDR_FLOAT);
 SSD1306 display(0x3c, 4, 5);
 
 Ticker ticker;
+Ticker ticker2;
 
 // Global Setting
 // your network SSID (name)
@@ -89,7 +90,7 @@ DHT dht(DHTPIN, DHTTYPE, 11); // 11 works fine for ESP8266
 
 // flag changed in the ticker function every 10 minutes
 bool readyForsenddata = true;
-
+bool readyForsendtothingspeak = true;
 // Use celsius by default, set 0 for fahrenheit
 #define UNIT_CELSIUS 1
 
@@ -118,6 +119,9 @@ void setreadyForsenddata() {
   readyForsenddata = true;  
 }
 
+void setreadyForsendtothingspeak() {
+  readyForsendtothingspeak = true;  
+}
 
 void getDHT22() {
   // Wait at least 2 seconds seconds between measurements.
@@ -210,7 +214,7 @@ void reconnect() {
 }
 
 
-void send_data()
+void send_MQTT_data()
 {
 
     getDHT22();
@@ -227,6 +231,11 @@ void send_data()
     Serial.println(lux);
     client.publish(outTopic3, charlux);
 
+
+}
+
+void send_thingspeak_data()
+{
     if (espClient.connect(tsserver,80)) {  //   "184.106.153.149" or api.thingspeak.com
     String postStr = apiKey;
            postStr +="&field1=";
@@ -248,13 +257,12 @@ void send_data()
      espClient.print(postStr);
     }  
     espClient.stop();
-}
-
+}   
 void setup() {
   // initialize dispaly
   display.init();
   // For some users
-  display.flipScreenVertically();
+  //display.flipScreenVertically();
   // set the drawing functions
   display.setFrameCallbacks(3, frameCallbacks);
   // how many ticks does a slide of frame take?
@@ -330,6 +338,8 @@ void setup() {
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
   dht.begin();           // initialize temperature sensor
+  ticker.attach(60 * 1, setreadyForsenddata); //every minute
+  ticker2.attach(60 * 10, setreadyForsendtothingspeak);
 
 }
 
@@ -340,8 +350,13 @@ void loop() {
   
   if (readyForsenddata) {
         readyForsenddata = false;
-        send_data();  
+        send_MQTT_data();  
   }
+  if (readyForsendtothingspeak) {
+        readyForsendtothingspeak = false;
+        send_thingspeak_data();  
+  }
+  
   display.clear();
   display.nextFrameTick();
   display.display();
